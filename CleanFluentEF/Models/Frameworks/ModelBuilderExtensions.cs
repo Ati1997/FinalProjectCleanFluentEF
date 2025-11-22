@@ -5,11 +5,11 @@ namespace CleanFluentEF.Models.Frameworks
 {
     public static class ModelBuilderExtensions
     {
-        public static void RegisterAllEntities<TInterface>(this ModelBuilder modelBuilder, params Assembly[] assemblies)
+        public static void RegisterAllEntities<TInterface>(this ModelBuilder modelBuilder, Assembly assembly)
         {
-            var types = assemblies
-                .SelectMany(a => a.GetExportedTypes())
-                .Where(c => c.IsClass && !c.IsAbstract && typeof(TInterface).IsAssignableFrom(c));
+            var types = assembly
+                .GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && typeof(TInterface).IsAssignableFrom(t));
 
             foreach (var type in types)
             {

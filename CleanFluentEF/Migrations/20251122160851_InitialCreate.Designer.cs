@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanFluentEF.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251121103909_Initial")]
-    partial class Initial
+    [Migration("20251122160851_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,10 @@ namespace CleanFluentEF.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users", "Person");
@@ -217,19 +221,19 @@ namespace CleanFluentEF.Migrations
                     b.ToTable("Products", "Product");
                 });
 
-            modelBuilder.Entity("UserRoles", b =>
+            modelBuilder.Entity("UserRoleMapping", b =>
                 {
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RoleId", "UserId");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.ToTable("UserRoles", "Person");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoleMapping", "Person");
                 });
 
             modelBuilder.Entity("CleanFluentEF.Models.DomainModels.OrderAggregates.OrderDetail", b =>
@@ -281,7 +285,7 @@ namespace CleanFluentEF.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("UserRoles", b =>
+            modelBuilder.Entity("UserRoleMapping", b =>
                 {
                     b.HasOne("CleanFluentEF.Models.DomainModels.PersonAggregates.Role", null)
                         .WithMany()

@@ -11,7 +11,7 @@ namespace CleanFluentEF.Models.DomainModels.ProductAggregates
         public DateTime DateModification { get; set; }
         public bool IsDeleted { get; set; }
 
-        public Guid CategoryId { get; set; } // Foreign Key
-        public Category? Category { get; set; } // Navigation
+        public Guid CategoryId { get; set; } 
+        public Category? Category { get; set; } 
     }
 }

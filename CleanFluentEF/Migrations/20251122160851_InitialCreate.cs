@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CleanFluentEF.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,7 +86,8 @@ namespace CleanFluentEF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    LName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -147,25 +148,25 @@ namespace CleanFluentEF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "UserRoleMapping",
                 schema: "Person",
                 columns: table => new
                 {
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new { x.RoleId, x.UserId });
+                    table.PrimaryKey("PK_UserRoleMapping", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
+                        name: "FK_UserRoleMapping_Roles_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "Person",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRoles_Users_UserId",
+                        name: "FK_UserRoleMapping_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "Person",
                         principalTable: "Users",
@@ -227,10 +228,10 @@ namespace CleanFluentEF.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_UserId",
+                name: "IX_UserRoleMapping_RoleId",
                 schema: "Person",
-                table: "UserRoles",
-                column: "UserId");
+                table: "UserRoleMapping",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
@@ -245,7 +246,7 @@ namespace CleanFluentEF.Migrations
                 schema: "Orders");
 
             migrationBuilder.DropTable(
-                name: "UserRoles",
+                name: "UserRoleMapping",
                 schema: "Person");
 
             migrationBuilder.DropTable(

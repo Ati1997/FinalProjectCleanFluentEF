@@ -157,9 +157,13 @@ namespace CleanFluentEF.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("UsersTable", "Person");
+                    b.ToTable("Users", "Person");
                 });
 
             modelBuilder.Entity("CleanFluentEF.Models.DomainModels.ProductAggregates.Category", b =>
@@ -216,15 +220,15 @@ namespace CleanFluentEF.Migrations
 
             modelBuilder.Entity("UserRoleMapping", b =>
                 {
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RoleId", "UserId");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("UserRoleMapping", "Person");
                 });

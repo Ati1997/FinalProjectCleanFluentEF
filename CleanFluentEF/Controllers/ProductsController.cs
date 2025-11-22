@@ -2,6 +2,7 @@
 using CleanFluentEF.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CleanFluentEF.Controllers
 {
@@ -45,6 +46,7 @@ namespace CleanFluentEF.Controllers
         // -----------------------------
         // POST: api/Products
         // -----------------------------
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct(Product product)
         {
